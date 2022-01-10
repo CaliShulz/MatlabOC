@@ -1,0 +1,64 @@
+
+clear all
+clc
+close all
+
+% Compare obstacle avoidance problem single integrator vs double integrator
+
+% Single obstacle
+% Direct transcription with Euler discretization step
+
+
+[time_vect,x_opt_si,u_opt_si,cost_opt_si,param_out] = run_obs_avoidance_SI();
+[time_vect,x_opt_di,u_opt_di,cost_opt_di,param_out] = run_obs_avoidance_DI();
+
+
+% Plot trajectories SI
+figure
+plot(x_opt_si(1,1),x_opt_si(2,1),'o','MarkerSize',10,'Color','b','MarkerFaceColor','b');
+hold on
+plot(x_opt_si(1,:),x_opt_si(2,:),'LineWidth',2,'Color','b--')
+
+% Plot obstacle
+x_obs = param_out.x_obs;
+r_obs = param_out.r_obs;
+x_T   = param_out.x_T;
+
+dummy_angle = linspace(0,2*pi,100);
+plot(x_obs(1) + r_obs*cos(dummy_angle),x_obs(2) + r_obs*sin(dummy_angle),'LineWidth',2,'Color','r');
+
+% Plot target
+plot(x_T(1),x_T(2),'o','MarkerSize',10,'Color','g','MarkerFaceColor','g');
+grid minor
+axis([-0.1,1.1,-0.1,1.1])
+
+
+
+figure
+plot(time_vect_dt(1:end-1),u_opt_dt,'og')
+hold on
+stairs(time_vect_ss,u_opt_ss,'r')
+plot(time_vect_is,u_opt_is,'b')
+grid minor
+title('Optimal Control','fontsize',14,'interpreter','latex')
+xlabel('Time [s]','fontsize',14,'interpreter','latex')
+ylabel('Control Action','fontsize',14,'interpreter','latex')
+leg1 = legend('Direct Transcription','Direct Single Shooting','Indirect Single Shooting',...
+       'Location','Best');
+set(leg1,'Interpreter','latex');
+set(leg1,'FontSize',14);
+
+
+figure
+plot(x_opt_dt(1,:),x_opt_dt(2,:),'og')
+hold on
+stairs(x_opt_ss(1,:),x_opt_ss(2,:),'r')
+plot(x_opt_is(:,1),x_opt_is(:,2),'b')
+grid minor
+title('Optimal Trajectories in State Space','fontsize',14,'interpreter','latex')
+xlabel('$x_1$','fontsize',14,'interpreter','latex')
+ylabel('$x_2$','fontsize',14,'interpreter','latex')
+leg1 = legend('Direct Transcription','Direct Single Shooting','Indirect Single Shooting',...
+       'Location','Best');
+set(leg1,'Interpreter','latex');
+set(leg1,'FontSize',14);
