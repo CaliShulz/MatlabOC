@@ -10,7 +10,14 @@ Optimal Control History:
 
 
 Optimal Trajectory:
+
+
 ![image description](opt_traj.svg)
 ![image description](opt_traj_zoomed.svg)
+
+
+Compare Single Integrator and Double Integrator for obstacle avoidance
+
+![image description](compare_SI_DI.svg)
 
 
